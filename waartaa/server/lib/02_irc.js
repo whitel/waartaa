@@ -167,26 +167,69 @@ IRCHandler = function (user, user_server) {
       _updateChannelNicks(message.channel, message.nicks);
     }
 
-    function _addWhoListener () {
-      if (LISTENERS.server['who'] != undefined)
+    function _addWhoReplyListener () {
+      if (LISTENERS.server['whoReply'] != undefined)
         return;
-      LISTENERS.server['who'] = '';
-      client.addListener('who', function (message) {
+      LISTENERS.server['whoReply'] = '';
+      client.addListener('whoReply', function (message) {
+            if (!message)
+                return;
+            var channel_name = message.args[1];
+            var nick = message.args[5];
+            var key = user_server.name + '-' + channel_name;
+            var lock = WHO_DATA_POLL_LOCK[key] || {};
+            if (lock.user != user.username)
+                return;
+            logger.info('WHO_REPLY', message);
+            var data = {
+              user: message.args[2],
+              host: message.args[3],
+              server: message.args[4],
+              nick_status: message.args[6],
+              server_hops: message.args[7].split(' ', 1)[0],
+              gecos: message.args[7].split(' ').slice(1).join(' ')
+            };
+            var whoisInfo = whoToWhoisInfo(nick, data);
+            _create_update_server_nick(whoisInfo);
+            ChannelNicks.update(
+                {
+                    channel_name: channel_name, server_name: user_server.name,
+                    nick: nick
+                },
+                {
+                    $set: {
+                        away: whoisInfo.away, last_updated: new Date(),
+                    }
+                },
+                {upsert: true, multi: true}
+            );
+      });
+    }
+
+    function _addWhoListener () {
+      if (LISTENERS.server['whoEnd'] != undefined)
+        return;
+      LISTENERS.server['whoEnd'] = '';
+      client.addListener('whoEnd', function (message) {
         try {
             if (!message)
                 return;
-            var key = user_server.name + '-' + message.channel;
-            if (WHO_DATA_POLL_LOCK[key] == user.username)
-                WHO_DATA_POLL_LOCK[key] = "";
-            if (message) {
-                Fiber(function () {
-                  for (nick in message.nicks) {
-                    var who_info = message.nicks[nick];
-                    var whoisInfo = whoToWhoisInfo(nick, who_info);
-                    _create_update_server_nick(whoisInfo);
-                  }
-                  _updateChannelNicks(message.channel, message.nicks);
-                }).run();
+            var channel_name = message.args[1];
+            var key = user_server.name + '-' + channel_name;
+            var timestamp = null;
+            if (WHO_DATA_POLL_LOCK[key].user == user.username) {
+                timestamp = WHO_DATA_POLL_LOCK[key].timestamp;
+                WHO_DATA_POLL_LOCK[key] = {};
+                if (timestamp)
+                    ChannelNicks.remove(
+                        {
+                            channel_name: channel_name,
+                            server_name: user_server.name,
+                            last_updated: {
+                                $lt: timestamp
+                            }
+                        }
+                    );
             }
         } catch (err) {
             logger.error(err);
@@ -196,8 +239,11 @@ IRCHandler = function (user, user_server) {
 
     function _getChannelWHOData (channel_name) {
         var key = user_server.name + '-' + channel_name;
-        if (!WHO_DATA_POLL_LOCK[key] || WHO_DATA_POLL_LOCK[key] == user.username) {
-            WHO_DATA_POLL_LOCK[key] = user.username;
+        if (!WHO_DATA_POLL_LOCK[key] || (WHO_DATA_POLL_LOCK[key] || {}).user == user.username) {
+            WHO_DATA_POLL_LOCK[key] = {
+                user: user.username,
+                timestamp: new Date()
+            };
             client.send('who', channel_name);
         }
     }
@@ -438,6 +484,7 @@ IRCHandler = function (user, user_server) {
             status: 'connected'}
         });
         _addWhoListener();
+        _addWhoReplyListener();
         _addServerQuitListener();
         _addChannelTopicListener();
         _addNoticeListener();
@@ -565,8 +612,8 @@ IRCHandler = function (user, user_server) {
             UserChannels.find(
                 {user_server_id: user_server._id}).forEach(function (channel) {
                     var key = user_server.name + '-' + channel.name;
-                    if (WHO_DATA_POLL_LOCK[key] == user.username)
-                        WHO_DATA_POLL_LOCK[key] = '';
+                    if ((WHO_DATA_POLL_LOCK[key] || {}).user == user.username)
+                        WHO_DATA_POLL_LOCK[key] = {};
                 });
             for (job in JOBS) {
                 Meteor.clearInterval(JOBS[job]);
