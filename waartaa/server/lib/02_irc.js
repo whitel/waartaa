@@ -191,18 +191,20 @@ IRCHandler = function (user, user_server) {
             };
             var whoisInfo = whoToWhoisInfo(nick, data);
             _create_update_server_nick(whoisInfo);
-            ChannelNicks.update(
-                {
-                    channel_name: channel_name, server_name: user_server.name,
-                    nick: nick
-                },
-                {
-                    $set: {
-                        away: whoisInfo.away, last_updated: new Date(),
-                    }
-                },
-                {upsert: true, multi: true}
-            );
+            Fiber(function () {
+                ChannelNicks.update(
+                    {
+                        channel_name: channel_name, server_name: user_server.name,
+                        nick: nick
+                    },
+                    {
+                        $set: {
+                            away: whoisInfo.away, last_updated: new Date(),
+                        }
+                    },
+                    {upsert: true, multi: true}
+                );
+            }).run();
       });
     }
 
