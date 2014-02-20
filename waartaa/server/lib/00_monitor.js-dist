@@ -1,11 +1,34 @@
-/*
-To enable monitoring Waartaa using nodetime.com,
-copy this file to waartaa/server/lib/00_monitor.js
-and add proper nodetime's APP KEY.
-*/
 if (Meteor.isServer) {
+    try {
+      Npm.require('newrelic');
+    } catch (err) {
+      require('newrelic');
+    }
     Npm.require('nodetime').profile({
-      accountKey: 'NODETIME APP KEY', 
-      appName: 'Waartaa'
+      accountKey: '', 
+      appName: ''
     });
+    var options = {
+      "level": "info",
+      "subdomain": "",
+      "auth": {
+        "username": "",
+        "password": ""
+      },
+      "inputToken": "",
+      "json": true,
+      "handleExceptions": true,
+    };
+    logger = Winston.add(Winston_Loggly, options);
+    Object.defineProperty(logger.transports.loggly.client.config, 'inputUrl', {
+        value: 'https://logs-01.loggly.com/inputs/',
+        enumerable: true,
+        configurable: true
+    })
+    logger.exitOnError = function (err) {
+        console.log(err);
+        logger.error(err);
+        return false;
+    }
+    logger.info('====================Added winston loggly transport.==================');
 }
