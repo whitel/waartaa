@@ -36,4 +36,10 @@ if (Meteor.isServer) {
   } catch (err) {
     ssl_credentials = false;
   }
+  try {
+    elasticsearch = Npm.require('elasticsearch');
+  } catch (err) {
+    elasticsearch = require('elasticsearch');
+  }
 }
+
