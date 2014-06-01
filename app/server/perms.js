@@ -17,3 +17,39 @@ ChannelLogs.allow({
     return true;
   }
 });
+
+
+/**
+ * Validations and actions for insert, update, remove operations on
+ * UserChannels collection from client side.
+ */
+UserChannels.allow({
+  insert: function (userId, doc) {
+    return UserChannelManager().createOrUpdate(userId, doc);
+  },
+  update: function (userId, doc, fieldNames, modifer) {
+    return UserChannelManager().createOrUpdate(
+      userId, doc, fieldNames, modifer);
+  },
+  remove: function (userId, doc) {
+    return UserChannelManager().deactivate(userId, doc);
+  }
+});
+
+
+/**
+ * Validations and actions for insert, update and remove operations on
+ * UserServers collection from client side.
+ */
+UserServers.allow({
+  insert: function (userId, doc) {
+    return UserServerManager().createOrUpdate(userId, doc);
+  },
+  update: function (userId, doc, fieldNames, modifer) {
+    return UserServerManager().createOrUpdate(
+      userId, doc, fieldNames, modifer);
+  },
+  remove: function (userId, doc) {
+    return UserServerManager().deactivate(userId, doc);
+  }
+});
