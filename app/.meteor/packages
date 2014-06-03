@@ -44,3 +44,5 @@ accounts-ui-bootstrap-3
 jquery-titlealert
 oauth-encryption
 kadira
+chosen-package
+http
