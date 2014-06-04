@@ -602,3 +602,7 @@ body {
 .search-errors ul {
   margin-left: -10px;
 }
+
+em.hlt1 {
+  font-weight: bold;
+}
