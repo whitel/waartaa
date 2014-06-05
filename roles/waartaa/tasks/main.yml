@@ -4,9 +4,9 @@
 
 
   - name: copy conf files
-    shell: cp settings-local.js-dist settings-local.js chdir=~/waartaa/waartaa/server/
+    shell: cp settings-local.js-dist settings-local.js chdir=~/waartaa/app/server/
 
   - name: install meteorite deps
-    shell: mrt install chdir=~/waartaa/waartaa
+    shell: mrt install chdir=~/waartaa/app
     retries: 5
 
