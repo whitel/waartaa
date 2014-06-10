@@ -8,6 +8,10 @@
     {{else}}
       {{#if isCurrentRoomtype "pm"}}
         {{> pm_logs}}
+      {{else}}
+        {{#if isCurrentRoomtype "video"}}
+          {{> video_chat}}
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}
