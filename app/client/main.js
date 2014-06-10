@@ -23,3 +23,9 @@ Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL',
   extraSignupFields: []
 });
+
+$(document).ready(function () {
+  VideoChat.init({
+    'socketUrl': '//localhost:8080'
+  });
+});
