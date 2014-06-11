@@ -131,6 +131,7 @@ VideoChat = (function () {
       $.extend(this.options, opt);
       options = this.options;
       Session.set('easyrtcStatus', 'connecting');
+      Session.set('cameraEnabled', true);
 
       if (options.socketUrl)
         easyrtc.setSocketUrl(options.socketUrl);
@@ -168,6 +169,9 @@ VideoChat = (function () {
         $('.errMsg').text(errText);
         $('.errMsg').show().delay(5000).fadeOut();
       };
+
+      var enableCamera = Session.get('cameraEnabled') ? true : false;
+      easyrtc.enableCamera(enableCamera);
 
       easyrtc.hangupAll();
       if (easyrtc.getLocalStream()) {

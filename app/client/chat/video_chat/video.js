@@ -38,6 +38,10 @@ Template.video_chat.helpers({
          buttonHTML += ' data-easyrtcid="'+id+'">Hangup</button>';
       return Spacebars.SafeString(buttonHTML);
     }
+  },
+
+  isCameraEnabled: function () {
+    return Session.get('cameraEnabled') ? 'checked' : '';
   }
 });
 
@@ -45,5 +49,11 @@ Template.video_chat.events({
   'click .hangup-btn': function (e) {
     var id = $(e.target).data('easyrtcid');
     VideoChat.hangup(id);
+  },
+
+  'click #enable-camera': function (e) {
+    var enable = $(e.target).prop('checked');
+    easyrtc.enableCamera(enable);
+    Session.set('cameraEnabled', enable);
   }
 });
