@@ -13,7 +13,8 @@ VideoChat = (function () {
   };
 
   var disconnectListener = function () {
-    Session.set('selfEasyrtcId', '');
+    Session.set('selfEasyrtcId');
+    Session.set('otherEasyrtcId');
     Session.set('easyrtcStatus', 'connecting');
   };
 
@@ -45,6 +46,7 @@ VideoChat = (function () {
   };
 
   var successCB = function () {
+    self.renderLocalStream();
   };
 
   var errorCB = function () {
@@ -64,7 +66,6 @@ VideoChat = (function () {
     $('.call-accept-label').text(acceptMsg);
 
     var _mediaSuccessCB = function () {
-      VideoChat.renderLocalStream();
       CB(true);
       Session.set('otherEasyrtcId', easyrtcId);
     };
@@ -104,28 +105,42 @@ VideoChat = (function () {
   };
 
   var streamAcceptor = function (easyrtcId, stream) {
-    VideoChat.remoteStream = stream;
-    VideoChat.renderRemoteStream();
+    self.remoteStream = stream;
+    self.renderLocalStream();
+    self.renderRemoteStream();
   };
 
   var onStreamClosed = function (easyrtcId) {
     if (Session.get('otherEasyrtcId') == easyrtcId) {
       Session.set('otherEasyrtcId');
       Session.set('videoCallingId');
-      VideoChat.remoteStream = '';
-      VideoChat.renderRemoteStream();
+      self.remoteStream = '';
+      self.resetRemoteVideoObj();
     }
   };
 
-  return {
+  var self = {
+    haveSelfVideo: false,
+
     options: {
       'appName': 'waartaa',
       'socketUrl': null,
       'reconnectTime': 10000 // in milliseconds
     },
 
+    isConnected: function () {
+      var id = Session.get('selfEasyrtcId');
+      if (id)
+        return true;
+      else
+        return false;
+    },
+
     init: function (opt) {
-      if (typeof easyrtc === 'undefined')
+      if (
+          typeof easyrtc === 'undefined' ||
+          this.isConnected()
+         )
         return;
 
       $.extend(this.options, opt);
@@ -157,7 +172,6 @@ VideoChat = (function () {
       Session.set('videoCallingId', otherEasyrtcId);
 
       var _mediaSuccessCB = function () {
-        VideoChat.renderLocalStream();
         easyrtc.call(otherEasyrtcId, successCB, errorCB, acceptedCB);
       }
 
@@ -183,11 +197,12 @@ VideoChat = (function () {
 
     renderLocalStream: function () {
       var videoObj = document.getElementById('self-video');
-      if(!videoObj)
+      if(!videoObj || this.haveSelfVideo)
         return;
       var stream = easyrtc.getLocalStream();
+      easyrtc.setVideoObjectSrc(videoObj, stream);
       if (stream) {
-        easyrtc.setVideoObjectSrc(videoObj, stream);
+        this.haveSelfVideo = true;
         $('#self-video-container').show();
       } else {
         $('#self-video-container').hide();
@@ -199,8 +214,8 @@ VideoChat = (function () {
       if(!videoObj)
         return;
       var stream = this.remoteStream;
+      easyrtc.setVideoObjectSrc(videoObj, stream);
       if (stream) {
-        easyrtc.setVideoObjectSrc(videoObj, stream);
         $('#remote-video-container').show();
       } else {
         $('#remote-video-container').hide();
@@ -240,6 +255,12 @@ VideoChat = (function () {
         var username = easyrtc.idToName(id);
         return username;
       }
+    },
+
+    disconnect: function () {
+      easyrtc.disconnect();
     }
-  }
+  };
+
+  return self;
 })();

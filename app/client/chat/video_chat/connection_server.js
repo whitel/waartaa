@@ -16,3 +16,9 @@ Template.video_chat_connection_server.helpers({
       return 'spin glyphicon-refresh';
   }
 });
+
+Template.video_chat_connection_server.rendered = function () {
+  VideoChat.init({
+    'socketUrl': '//localhost:8080'
+  });
+};

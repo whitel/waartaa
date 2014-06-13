@@ -474,6 +474,15 @@ UI.registerHelper('isChatMessageNew', function (status) {
   return false;
 });
 
+UI.registerHelper('isVideoChatEnabled', function () {
+  var user = Meteor.user();
+  if (user) {
+    return user.allowVideoChat ? true: false;
+  } else {
+    return false;
+  }
+});
+
 /**
  * Check if window in focus or not
  */
