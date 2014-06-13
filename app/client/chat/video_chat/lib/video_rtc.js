@@ -207,6 +207,21 @@ VideoChat = (function () {
       }
     },
 
+    resetLocalVideoObj: function () {
+      if (typeof easyrtc === 'undefined')
+        return;
+      var videoObj = document.getElementById('self-video');
+      easyrtc.setVideoObjectSrc(videoObj, '');
+      this.haveSelfVideo = false;
+    },
+
+    resetRemoteVideoObj: function () {
+      if (typeof easyrtc === 'undefined')
+        return;
+      var videoObj = document.getElementById('remote-video');
+      easyrtc.setVideoObjectSrc(videoObj, '');
+    },
+
     hangup: function (otherEasyrtcId) {
       easyrtc.hangup(otherEasyrtcId);
     },

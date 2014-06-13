@@ -217,6 +217,12 @@ waartaa.chat.helpers.serverRoomSelectHandler = function (event) {
     else if (prev_room.roomtype == 'pm')
       Session.set(
         'pmLogCount-' + prev_room.room_id, DEFAULT_LOGS_COUNT);
+    else if (prev_room.roomtype == 'video') {
+      // set self and remote video objects src to empty
+      // otherwise re-rendering them doesn't show stream
+      VideoChat.resetLocalVideoObj();
+      VideoChat.resetRemoteVideoObj();
+    }
     Meteor.setTimeout(function () {
       if ($target.data('roomtype') == 'channel') {
         var server_id = $target.parents('.server').data('server-id');
