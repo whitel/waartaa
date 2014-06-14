@@ -65,14 +65,10 @@ VideoChat = (function () {
 
     $('.call-accept-label').text(acceptMsg);
 
-    var _mediaSuccessCB = function () {
+    var mediaSuccessCB = function () {
       CB(true);
       Session.set('otherEasyrtcId', easyrtcId);
     };
-
-    var mediaSuccessCB = (function () {
-      return _mediaSuccessCB;
-    })(easyrtcId, CB);
 
     var mediaErrorCB = function (errCode, errText) {
       $('.errMsg').text(errText);
@@ -85,9 +81,9 @@ VideoChat = (function () {
         $('#video-server-link').click();
       }
       if (easyrtc.getLocalStream()) {
-        _mediaSuccessCB();
+        mediaSuccessCB();
       } else {
-        easyrtc.initMediaSource(_mediaSuccessCB, mediaErrorCB);
+        easyrtc.initMediaSource(mediaSuccessCB, mediaErrorCB);
       }
     };
 
@@ -96,10 +92,12 @@ VideoChat = (function () {
       CB(false);
     };
 
-    $('#call-accept-btn').click(function () {
+    // First unbind then bind again click event
+    // to prevent triggering it twice
+    $('#call-accept-btn').off('click').on('click', function () {
       acceptTheCall();
     });
-    $('#call-reject-btn').click(function () {
+    $('#call-reject-btn').off('click').on('click', function () {
       rejectTheCall();
     });
   };
@@ -169,15 +167,12 @@ VideoChat = (function () {
       if (!hangout)
         return;
 
+      easyrtc.hangupAll();
       Session.set('videoCallingId', otherEasyrtcId);
 
-      var _mediaSuccessCB = function () {
+      var mediaSuccessCB = function () {
         easyrtc.call(otherEasyrtcId, successCB, errorCB, acceptedCB);
-      }
-
-      var mediaSuccessCB = (function () {
-        return _mediaSuccessCB;
-      })(otherEasyrtcId);
+      };
 
       var mediaErrorCB = function (errCode, errText) {
         $('.errMsg').text(errText);
@@ -187,9 +182,8 @@ VideoChat = (function () {
       var enableCamera = Session.get('cameraEnabled') ? true : false;
       easyrtc.enableCamera(enableCamera);
 
-      easyrtc.hangupAll();
       if (easyrtc.getLocalStream()) {
-        _mediaSuccessCB();
+        mediaSuccessCB();
       } else {
         easyrtc.initMediaSource(mediaSuccessCB, mediaErrorCB);
       }
