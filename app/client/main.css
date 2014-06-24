@@ -142,10 +142,6 @@ div.dropdown a {
 }
 */
 
-.navbar .nav > li > a:hover {
-    color: #A7A7A7;
-}
-
 .user-away .dropdown-toggle {
   color: #B7BABB;
 }
@@ -162,17 +158,8 @@ body {
     background-color: #F8F8F8 !important;
 }
 
-.global-navbar {
-  background-color: #2F4279;
-}
-
 .container {
   width: 100%;
-}
-
-.global-navbar .navbar-brand {
-  font-weight: 500;
-  color: #ffffff;
 }
 
 .global-navbar.navbar-inverse .navbar-nav > .active > a,
@@ -568,22 +555,4 @@ body {
   width: 715px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.medium-margin-top{
-  margin-top: 20px;
-}
-
-.less-margin-top {
-  margin-top: 10px;
-}
-
-#user-links {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-#user-links > li > a {
-  padding-right: 5px;
-  padding-left: 5px;
 }
