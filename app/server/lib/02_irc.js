@@ -191,7 +191,6 @@ ChannelLogsManager = function () {
   function _insert (log) {
     ChannelLogs.insert(log, function (err, id) {
       log._id = id;
-      console.log(log);
       if (CONFIG.ENABLE_ELASTIC_SEARCH) {
         var esClient = elasticsearch.Client({
           host: CONFIG.ELASTIC_SEARCH_HOST
@@ -202,8 +201,6 @@ ChannelLogsManager = function () {
           body: log,
           id: id // use same id as mongo id to prevent errors https://github.com/elasticsearch/elasticsearch/issues/2638
         }, function (err, resp) {
-          console.log('es resp');
-          console.log(resp);
         });
       }
     });
