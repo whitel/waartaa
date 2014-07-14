@@ -156,6 +156,7 @@ VideoChat = (function () {
       easyrtc.setAcceptChecker(acceptChecker);
       easyrtc.setStreamAcceptor(streamAcceptor);
       easyrtc.setOnStreamClosed(onStreamClosed);
+      easyrtc.setVideoDims(640, 480);
     },
 
     performCall: function (otherEasyrtcId) {
@@ -223,6 +224,7 @@ VideoChat = (function () {
       var videoObj = document.getElementById('self-video');
       easyrtc.setVideoObjectSrc(videoObj, '');
       this.haveSelfVideo = false;
+      $('#self-video-container').hide();
     },
 
     resetRemoteVideoObj: function () {
@@ -230,6 +232,7 @@ VideoChat = (function () {
         return;
       var videoObj = document.getElementById('remote-video');
       easyrtc.setVideoObjectSrc(videoObj, '');
+      $('#remote-video-container').hide();
     },
 
     hangup: function (otherEasyrtcId) {

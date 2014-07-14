@@ -624,8 +624,9 @@ margin-left: 10px;
 }
 
 #self-video {
-  height: 130px;
-  width: 180px;
+  height: 128px;
+  width: 170px;
+  border:1px solid #808080;;
 }
 
 #self-username {
@@ -637,8 +638,9 @@ margin-left: 10px;
 }
 
 #remote-video {
-  height: 330px;
-  width: 520px;
+  height: 481px;
+  width: 640px;
+  border:1px solid #808080;
 }
 
 #remote-username {
