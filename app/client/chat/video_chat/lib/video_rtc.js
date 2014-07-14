@@ -177,7 +177,8 @@ VideoChat = (function () {
       var mediaErrorCB = function (errCode, errText) {
         $('.errMsg').text(errText);
         $('.errMsg').show().delay(5000).fadeOut();
-      };
+        Session.set('videoCallingId');
+     };
 
       var enableCamera = Session.get('cameraEnabled') ? true : false;
       easyrtc.enableCamera(enableCamera);
