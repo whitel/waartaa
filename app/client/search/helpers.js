@@ -126,7 +126,7 @@ Template.search.helpers({
    * Return errors in search result
    */
   errors: function () {
-    var errors = Session.get('errors');
+    var errors = Session.get('searchErrors');
     if (errors)
       return errors;
   },
