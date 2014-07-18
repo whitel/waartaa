@@ -144,4 +144,24 @@ Router.map(function () {
     },
     fastRender: true
   });
+  this.route('admin', {
+    path: /^\/admin$/,
+    onBeforeAction: function () {
+      Router.go('/admin/');
+    }
+  });
+  this.route('admin/', {
+    path: /^\/admin\/$/,
+    template: 'admin',
+    onBeforeAction: [
+      function (pause) {
+      },
+    ],
+    waitOn: function () {
+      return [
+      ]
+    },
+    fastRender: true
+  });
+
 });
