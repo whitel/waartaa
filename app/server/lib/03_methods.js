@@ -586,7 +586,8 @@ Meteor.methods({
       data: data,
       perPage: limit,
       pageNo: pageNo,
-      totalCount: totalCount
+      totalCount: totalCount,
+      sort: queryOptions['sort']
     }
     return result;
   }
