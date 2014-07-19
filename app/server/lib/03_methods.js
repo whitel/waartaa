@@ -548,5 +548,46 @@ Meteor.methods({
     data.lastUpdated = Date();
     Bookmarks.insert(data);
     return true;
+  },
+  // Search user servers
+  searchUserServers: function (search, pageNo, sort) {
+    var limit = CONFIG.show_last_n_user_servers || 20;
+    var query = {
+      active: true
+    }
+    var queryOptions = {
+      fields: {
+        nick: 1, status: 1,
+        user: 1, user_id: 1,
+        name: 1, server_id: 1
+      }
+    };
+    if (search) {
+      query['nick'] = search;
+    }
+    if (pageNo) {
+      queryOptions['skip'] = (pageNo - 1) * limit;
+    } else {
+      pageNo = 1;
+    }
+    if (sort) {
+      queryOptions['sort'] = sort;
+    } else {
+      queryOptions['sort'] = {nick: 1};
+    }
+    queryOptions['limit'] = limit;
+    var user_servers = UserServers.find(query, queryOptions);
+    var data = [];
+    user_servers.forEach(function (doc) {
+      data.push(doc);
+    });
+    var totalCount = user_servers.count();
+    var result = {
+      data: data,
+      perPage: limit,
+      pageNo: pageNo,
+      totalCount: totalCount
+    }
+    return result;
   }
-})
+});
