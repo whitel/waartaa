@@ -1,2 +1,88 @@
 <template name="admin">
+  <div class="chatlogs-loader-msg" style="display:none">Searching...</div>
+  <div class="container nick-status-container">
+    <div class="row">
+      <div id="search-fields" class="col-md-7">
+        <i class="fa fa-search"></i>
+        <input id="search-message" type= "text" class="form-control search-input" placeholder="Search">
+      </div>
+      <div class="col-md-2">
+        <button id="search-button" type="button" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div id="nick-status">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Nick<i class="sort-icon pull-right fa fa-sort-desc"></i></th>
+                <th>Server<i class="sort-icon pull-right fa fa-sort"></i></th>
+                <th>Statu<i class="sort-icon pull-right fa fa-sort"></i>s</th>
+                <th>Actions<i class="sort-icon pull-right fa fa-sort"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>rtnpro</td>
+                <td>Freenode</td>
+                <td>Connected</td>
+                <td>
+                  <a href="#">Disconnect</a>
+                  <span>|</span>
+                  <a href="#">Delete</a>
+                </td>
+              </tr>
+              <tr>
+                <td>rtnpro</td>
+                <td>OFTC</td>
+                <td>Connected</td>
+                <td>
+                  <a href="#">Disconnect</a>
+                  <span>|</span>
+                  <a href="#">Delete</a>
+                </td>
+              </tr>
+              <tr>
+                <td>rtnpro</td>
+                <td>Mozilla</td>
+                <td>Disconnected</td>
+                <td>
+                  <a href="#">Disconnect</a>
+                  <span>|</span>
+                  <a href="#">Delete</a>
+                </td>
+              </tr>
+              <tr>
+                <td>sayan</td>
+                <td>Freenode</td>
+                <td>Connected</td>
+                <td>
+                  <a href="#">Disconnect</a>
+                  <span>|</span>
+                  <a href="#">Delete</a>
+                </td>
+              </tr>
+              <tr>
+                <td>dne0</td>
+                <td>Freenode</td>
+                <td>Connected</td>
+                <td>
+                  <a href="#">Disconnect</a>
+                  <span>|</span>
+                  <a href="#">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="paginator">
+          <a href="#" id="previous-icon" class="next-prev-icon"><icon class="glyphicon glyphicon-chevron-left"></icon></a>
+          <input id="page-no" type="text" value="1" data-current-page="{{currentPage}}" data-total-pages=""/>
+          <span class="total-count"> / 100</span>
+          <a href="#" id="next-icon" class="next-prev-icon"><icon class="glyphicon glyphicon-chevron-right"></icon></a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
