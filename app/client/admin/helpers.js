@@ -5,9 +5,13 @@ waartaa.admin.helpers = {
         if (!err) {
           Session.set('user_servers_search_result', result);
           Session.set('user_servers_search_error');
+          $('#nick-status').show();
+          $('#nick-status-error').hide();
         } else {
-          Session.set('user_servers_search_error', err);
+          Session.set('user_servers_search_error', 'OOPS! Something went wrong!');
           Session.set('user_servers_search_result');
+          $('#nick-status').hide();
+          $('#nick-status-error').show();
         }
       }
     );
