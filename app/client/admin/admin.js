@@ -10,7 +10,8 @@ var _callbackSearch = function () {
 
 var _callbackNextPrev = function (page) {
   var search = Session.get('user_servers_search_message');
-  waartaa.admin.helpers.searchUserServers(search, page);
+  var sort = Session.get('user_servers_search_sort');
+  waartaa.admin.helpers.searchUserServers(search, page, sort);
 };
 
 Template.admin.events = {
@@ -51,5 +52,22 @@ Template.admin.events = {
         _callbackNextPrev(page);
       }
     }
+  },
+
+  'click .sortable': function (e) {
+    var sort = {};
+    var target = $(e.currentTarget);
+    var field = target.data('field') || 'nick';
+    var child = target.children();
+    if (child.hasClass('fa-desc')) {
+      var sortOrder = -1;
+    } else {
+      var sortOrder = 1;
+    }
+    sort[field] = sortOrder;
+    console.log(sort);
+    Session.set('user_servers_search_sort', sort);
+    var search = Session.get('user_servers_search_message');
+    waartaa.admin.helpers.searchUserServers(search, null, sort);
   }
 };
