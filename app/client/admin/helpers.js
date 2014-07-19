@@ -1,5 +1,6 @@
 waartaa.admin.helpers = {
   'searchUserServers': function (search, pageNo, sort) {
+    $('#chatlogs-loader').show();
     Meteor.call('searchUserServers', search, pageNo, sort,
       function (err, result) {
         if (!err) {
@@ -13,6 +14,7 @@ waartaa.admin.helpers = {
           $('#nick-status').hide();
           $('#nick-status-error').show();
         }
+        $('#chatlogs-loader').hide();
       }
     );
   }
