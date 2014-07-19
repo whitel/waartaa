@@ -69,3 +69,5 @@ waartaa['search'] = {
 waartaa['bookmarks'] = {
   'API_ENDPOINT': Meteor.absoluteUrl('api/bookmarks')
 };
+waartaa['admin'] = {
+};
