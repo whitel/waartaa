@@ -310,23 +310,29 @@ Meteor.methods({
     validate_user_server_form_data(data, user);
     _create_user_server(data, user);
   },
-  join_user_server: function (user_server_name) {
-    var user = Meteor.users.findOne({_id: this.userId});
+  join_user_server: function (user_server_name, userId) {
+    if (!userId) {
+      userId = this.userId;
+    }
+    var user = Meteor.users.findOne({_id: userId});
     UserServers.update(
       {
         name: user_server_name,
         user: user.username,
         status: 'user_disconnected'
       },
-      {$set: {status: 'disconnected'}},
+      {$set: {status: 'connecting'}},
       {multi: true}
     );
     _join_user_server(user, user_server_name);
   },
-  quit_user_server: function (user_server_name, close) {
-    var irc_handler = _get_irc_handler(user_server_name, this.userId);
+  quit_user_server: function (user_server_name, close, userId) {
+    if (!userId) {
+      userId = this.userId;
+    }
+    var irc_handler = _get_irc_handler(user_server_name, userId);
     if (irc_handler) {
-      var user = Meteor.users.findOne({_id: this.userId});
+      var user = Meteor.users.findOne({_id: userId});
       var active = close? false: true;
       UserServers.update(
         {
@@ -550,16 +556,14 @@ Meteor.methods({
     return true;
   },
   // Search user servers
-  searchUserServers: function (search, pageNo, sort) {
+  getUserServersToSubscribe: function (search, pageNo, sort) {
     var limit = CONFIG.show_last_n_user_servers || 20;
     var query = {
       active: true
     }
     var queryOptions = {
       fields: {
-        nick: 1, status: 1,
-        user: 1, user_id: 1,
-        name: 1, server_id: 1
+        _id: 1
       }
     };
     if (search) {

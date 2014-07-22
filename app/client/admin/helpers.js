@@ -1,13 +1,19 @@
 waartaa.admin.helpers = {
   'searchUserServers': function (search, pageNo, sort) {
     $('#chatlogs-loader').show();
-    Meteor.call('searchUserServers', search, pageNo, sort,
+    Meteor.call('getUserServersToSubscribe', search, pageNo, sort,
       function (err, result) {
         if (!err) {
           Session.set('user_servers_search_result', result);
           Session.set('user_servers_search_error');
           $('#nick-status').show();
           $('#nick-status-error').hide();
+          var data = result.data;
+          var user_server_collection_ids = [];
+          for (var i=0; i<data.length; i++) {
+            user_server_collection_ids.push(data[i]._id);
+          }
+          Session.set('user_server_collection_ids', user_server_collection_ids);
         } else {
           Session.set('user_servers_search_error', 'OOPS! Something went wrong!');
           Session.set('user_servers_search_result');
@@ -46,10 +52,9 @@ Template.admin.helpers({
    * Returns channel logs found.
    */
   data: function () {
-    var result = Session.get('user_servers_search_result');
-    if (result && result.data) {
-      return result.data;
-    }
+    return UserServers.find();
+  },
+
   showStatus: function (status) {
     if (status == 'connected')
       return 'Connected';

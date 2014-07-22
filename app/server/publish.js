@@ -200,6 +200,12 @@ Meteor.publish('channel_nick_suggestions',
     _this.ready();
   });
 
+Meteor.publish('nick_status', function (user_server_collection_ids) {
+  var user_servers = UserServers.find({_id: {$in: user_server_collection_ids}});
+  return user_servers;
+  this.ready();
+});
+
 Meteor.methods({
   say: function(message, id, roomtype) {
     var user = Meteor.users.findOne({_id: this.userId});

@@ -30,7 +30,7 @@
                   <td>{{ showStatus status }}</td>
                   <td>
                     {{#if statusOppositeAction status }}
-                      <a href="#">{{statusOppositeAction status}}</a>
+                      <a class="toggleJoinServer" href="#" data-user-id="{{user_id}}" data-server-name="{{name}}" data-status="{{status}}">{{statusOppositeAction status}}</a>
                       <span> | </span>
                     {{/if}}
                     <a href="#">Delete</a>

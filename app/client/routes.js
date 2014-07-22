@@ -155,6 +155,7 @@ Router.map(function () {
     template: 'admin',
     onBeforeAction: [
       function (pause) {
+        AdminSubscribe();
       },
     ],
     waitOn: function () {

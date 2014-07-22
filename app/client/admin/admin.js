@@ -11,6 +11,7 @@ var _callbackSearch = function () {
 var _callbackNextPrev = function (page) {
   var search = Session.get('user_servers_search_message');
   var sort = Session.get('user_servers_search_sort');
+  console.log(sort);
   waartaa.admin.helpers.searchUserServers(search, page, sort);
 };
 
@@ -65,9 +66,22 @@ Template.admin.events = {
       var sortOrder = 1;
     }
     sort[field] = sortOrder;
-    console.log(sort);
     Session.set('user_servers_search_sort', sort);
     var search = Session.get('user_servers_search_message');
     waartaa.admin.helpers.searchUserServers(search, null, sort);
+  },
+
+  'click .toggleJoinServer': function (e) {
+    var target = $(e.currentTarget);
+    var serverName = target.attr('data-server-name');
+    var userId = target.attr('data-user-id');
+    var status = target.attr('data-status');
+    if (status == 'connected') {
+      Meteor.call('quit_user_server', serverName, false, userId, function (err, result) {
+      });
+    } else if (status == 'user_disconnected'){
+      Meteor.call('join_user_server', serverName, userId, function (err, result) {
+      });
+    }
   }
 };
