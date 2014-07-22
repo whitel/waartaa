@@ -72,8 +72,17 @@ Template.admin.helpers({
       return 'Disconnect';
     else if (status == 'user_disconnected')
       return 'Connect';
+    else if (status == 'connecting')
+      return 'Connecting';
+    else if (status == 'disconnecting')
+      return 'Disconnecting';
+  },
+
+  showStatusClass: function (status) {
+    if (status == 'connected' || status == 'user_disconnected')
+      return 'btn-primary';
     else
-      return false;
+      return '';
   },
 
   sortIcon: function (field) {
