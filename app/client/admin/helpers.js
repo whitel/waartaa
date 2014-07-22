@@ -50,12 +50,21 @@ Template.admin.helpers({
     if (result && result.data) {
       return result.data;
     }
+  showStatus: function (status) {
+    if (status == 'connected')
+      return 'Connected';
+    else if (status == 'user_disconnected')
+      return 'Disconnected';
+    else if (status == 'connecting')
+      return 'Connecting';
+    else if (status == 'disconnecting')
+      return 'Disconnecting';
   },
 
   statusOppositeAction: function (status) {
     if (status == 'connected')
       return 'Disconnect';
-    else if (status == 'disconnected')
+    else if (status == 'user_disconnected')
       return 'Connect';
     else
       return false;
@@ -117,11 +126,4 @@ Template.admin.helpers({
     else
       return false;
   },
-
-  firstCharUppercase: function (str) {
-    if (str) {
-      return str.substr(0, 1).toUpperCase() + str.substr(1);
-    }
-  }
-
 });
