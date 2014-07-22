@@ -71,7 +71,7 @@ Template.admin.events = {
     waartaa.admin.helpers.searchUserServers(search, null, sort);
   },
 
-  'click .toggleJoinServer': function (e) {
+  'click .toggle-join-server': function (e) {
     var target = $(e.currentTarget);
     var serverName = target.attr('data-server-name');
     var userId = target.attr('data-user-id');
@@ -81,6 +81,15 @@ Template.admin.events = {
       });
     } else if (status == 'user_disconnected'){
       Meteor.call('join_user_server', serverName, userId, function (err, result) {
+      });
+    }
+  },
+
+  'click .delete-user-server': function (e) {
+    if (confirm("Are you sure?")) {
+      var target = $(e.currentTarget);
+      var id = target.attr('data-id');
+      Meteor.call('deleteUserServer', id, function (err, result) {
       });
     }
   }

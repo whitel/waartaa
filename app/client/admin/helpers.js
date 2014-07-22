@@ -52,7 +52,8 @@ Template.admin.helpers({
    * Returns channel logs found.
    */
   data: function () {
-    return UserServers.find();
+    var sort = Session.get('user_servers_search_sort') || {nick:1};
+    return UserServers.find({}, {sort: sort});
   },
 
   showStatus: function (status) {
