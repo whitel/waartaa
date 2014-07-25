@@ -201,8 +201,10 @@ Meteor.publish('channel_nick_suggestions',
   });
 
 Meteor.publish('nick_status', function (user_server_collection_ids) {
-  var user_servers = UserServers.find({_id: {$in: user_server_collection_ids}});
-  return user_servers;
+  if (Roles.userIsInRole(this.userId, ['admin'])) {
+    var user_servers = UserServers.find({_id: {$in: user_server_collection_ids}});
+    return user_servers;
+  }
   this.ready();
 });
 

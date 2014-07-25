@@ -90,6 +90,11 @@ Template.admin.events = {
       var target = $(e.currentTarget);
       var id = target.attr('data-id');
       Meteor.call('deleteUserServer', id, function (err, result) {
+          if (err || !result) {
+            $('#nick-status-error').text(
+              'Either you are not authorized or some other error occured.')
+              .show().delay(5000).fadeOut();
+          }
       });
     }
   }

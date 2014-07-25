@@ -557,6 +557,9 @@ Meteor.methods({
   },
   // Search user servers
   getUserServersToSubscribe: function (search, pageNo, sort) {
+    if (!Roles.userIsInRole(this.userId, ['admin']))
+      return null;
+
     var limit = CONFIG.show_last_n_user_servers || 20;
     var query = {
       active: true
@@ -597,6 +600,11 @@ Meteor.methods({
   },
   // delete user server
   deleteUserServer: function (id) {
-    UserServers.remove({_id: id}, true);
+    if (Roles.userIsInRole(this.userId, ['admin'])) {
+      UserServers.remove({_id: id}, true);
+      return true;
+    } else {
+      return false;
+    }
   }
 });

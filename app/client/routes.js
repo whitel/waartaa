@@ -24,6 +24,18 @@ Router.map(function () {
     fastRender: true
   });
 
+  this.route('index', {
+    path: '/403',
+    template: 'user_not_authorized',
+    onBeforeAction: function () {
+    },
+    onAfterAction: function () {
+      if (Meteor.isClient)
+        GAnalytics.pageview();
+    },
+    fastRender: true
+  });
+
   this.route('account', {
     path: /^\/settings$/,
     onBeforeAction: function() {
@@ -103,6 +115,7 @@ Router.map(function () {
       Router.go('/search/');
     }
   });
+
   this.route('search/', {
     path: /^\/search\/$/,
     template: 'search',
@@ -144,19 +157,34 @@ Router.map(function () {
     },
     fastRender: true
   });
+
   this.route('admin', {
     path: /^\/admin$/,
     onBeforeAction: function () {
       Router.go('/admin/');
     }
   });
+
   this.route('admin/', {
     path: /^\/admin\/$/,
     template: 'admin',
     onBeforeAction: [
       function (pause) {
-        AdminSubscribe();
-      },
+        if (Meteor.isClient) {
+          if (!Meteor.userId()) {
+            Router.go('/');
+            this.render('user_loggedout_content');
+            GAnalytics.pageview();
+            pause();
+          } else if (!Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+            Router.go('/403');
+            GAnalytics.pageview();
+            pause();
+          } else {
+            AdminSubscribe();
+          }
+        }
+      }
     ],
     waitOn: function () {
       return [
