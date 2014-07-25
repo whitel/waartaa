@@ -158,16 +158,16 @@ Router.map(function () {
     fastRender: true
   });
 
-  this.route('admin', {
-    path: /^\/admin$/,
+  this.route('admin-nick-status', {
+    path: /^\/admin\/nick-status$/,
     onBeforeAction: function () {
-      Router.go('/admin/');
+      Router.go('/admin/nick-status/');
     }
   });
 
-  this.route('admin/', {
-    path: /^\/admin\/$/,
-    template: 'admin',
+  this.route('admin-nick-status/', {
+    path: /^\/admin\/nick-status\/$/,
+    template: 'nick_status',
     onBeforeAction: [
       function (pause) {
         if (Meteor.isClient) {

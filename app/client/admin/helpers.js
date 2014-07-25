@@ -47,7 +47,7 @@ var _getTotalPages = function () {
   return 1;
 }
 
-Template.admin.helpers({
+Template.nick_status.helpers({
   /*
    * Returns channel logs found.
    */

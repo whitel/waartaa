@@ -1,4 +1,4 @@
-Template.admin.created = function () {
+Template.nick_status.created = function () {
   waartaa.admin.helpers.searchUserServers();
 }
 
@@ -15,7 +15,7 @@ var _callbackNextPrev = function (page) {
   waartaa.admin.helpers.searchUserServers(search, page, sort);
 };
 
-Template.admin.events = {
+Template.nick_status.events = {
   'click #search-button': function () {
     _callbackSearch();
   },
