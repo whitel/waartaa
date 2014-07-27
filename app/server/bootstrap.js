@@ -9,8 +9,14 @@ function initializeServers () {
     });
     var user = Meteor.users.findOne({username: SUPER_USER});
   }
+  // Add super user role type
   if (!Roles.userIsInRole(user._id, ['admin'])) {
     Roles.addUsersToRoles(user._id, ['admin']);
+  }
+  // Make super user admin of houston too
+  var is_houston_admin = Houston._admins.findOne({'user_id': user._id});
+  if (typeof(is_houston_admin) === 'undefined') {
+    Houston._admins.insert({'user_id': user._id});
   }
   for (server_name in GlobalServers) {
     var server = Servers.findOne({name: server_name});
