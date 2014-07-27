@@ -24,7 +24,8 @@
       "jquery-titlealert": {},
       "accounts-ui-bootstrap-3": {},
       "chosen-package": {},
-      "roles": {}
+      "roles": {},
+      "houston": {}
     },
     "packages": {
       "jquery-ui-bootstrap": {
@@ -142,6 +143,11 @@
         "tag": "v1.2.10",
         "commit": "7ccb35de0a6cb0c9a0c3666badd04757e39c09a6"
       },
+      "houston": {
+        "git": "https://github.com/gterrono/houston.git",
+        "tag": "v1.0.7",
+        "commit": "a27e9e42d03764f09a6681a98945787fe1f6303d"
+      },
       "jquery-ui": {
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
         "tag": "v1.9.2",
@@ -171,6 +177,16 @@
         "git": "https://github.com/oortcloud/meteor-crypto-base.git",
         "tag": "v3.1.2.1",
         "commit": "5df8d82a0595553415bbfae2930c6ecbeece5794"
+      },
+      "paginated-subscription": {
+        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
+        "tag": "v0.2.2",
+        "commit": "2133a2163575f569f90253f81314f21b2bf08d20"
+      },
+      "spin": {
+        "git": "https://github.com/SachaG/meteor-spin.git",
+        "tag": "v2.0.3",
+        "commit": "23c1145472a710d5c93fa4beaca4e576caeb2f24"
       }
     }
   }

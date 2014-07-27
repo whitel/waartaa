@@ -22,6 +22,7 @@
     "jquery-titlealert": {},
     "accounts-ui-bootstrap-3": {},
     "chosen-package": {},
-    "roles": {}
+    "roles": {},
+    "houston": {}
   }
 }
