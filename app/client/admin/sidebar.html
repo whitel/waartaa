@@ -1,0 +1,17 @@
+<template name="admin_sidebar">
+  <div id="admin-sidebar" class="bs-sidebar drawer drawer-left col-md-2 col-sm-3 col-xs-10 hidden-sm hidden-xs">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <strong>Admin Dashboard</strong>
+      </div>
+      <div class="panel-body scroller-container">
+        <ul class="nav bs-sidenav">
+          <li class="{{isRouteActive 'admin-nick-status'}}"><a href="admin/nick-status/">Nick Status</a></li>
+          <li><a>Analytics</a></li>
+          <li><a href="admin/collections
+          ">Collections</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
