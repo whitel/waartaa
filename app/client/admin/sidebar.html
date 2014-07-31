@@ -6,10 +6,27 @@
       </div>
       <div class="panel-body scroller-container">
         <ul class="nav bs-sidenav">
-          <li class="{{isRouteActive 'admin-nick-status'}}"><a href="/admin/nick-status/">Nick Status</a></li>
-          <li><a>Analytics</a></li>
-          <li><a href="admin/collections
-          ">Collections</a></li>
+          <li class="{{isRouteActive 'admin-nick-status'}}">
+            {{# if isRouteActive 'admin-nick-status'}}
+              <a href="#">Nick Status</a>
+            {{else}}
+              <a href="/admin/nick-status/">Nick Status</a>
+            {{/if}}
+          </li>
+          <li>
+            {{# if isRouteActive 'admin-analytics'}}
+              <a href="#">Analytics</a>
+            {{else}}
+              <a href="/admin/analytics/">Analytics</a>
+            {{/if}}
+          </li>
+          <li>
+            {{# if isRouteActive 'admin-collections'}}
+              <a href="#">Collections</a>
+            {{else}}
+              <a href="/admin/collections/">Collections</a>
+            {{/if}}
+          </li>
         </ul>
       </div>
     </div>
