@@ -19,6 +19,7 @@ Router.map(function () {
     onAfterAction: function () {
       if (Meteor.isClient)
         GAnalytics.pageview();
+      Session.set('currentPage', 'index');
     },
     fastRender: true
   });
@@ -34,6 +35,9 @@ Router.map(function () {
     path: /^\/settings\/$/,
     template: 'accountSettings',
     layoutTemplate: 'layout',
+    onAfterAction: function () {
+      Session.set('currentPage', 'account');
+    },
     onBeforeAction: [
         function () {
             if (Meteor.isClient) {
@@ -89,6 +93,54 @@ Router.map(function () {
     onAfterAction: function () {
       if (Meteor.isClient)
         GAnalytics.pageview('/chat/');
+      Session.set('currentPage', 'chat');
+    },
+    fastRender: true
+  });
+  this.route('search', {
+    path: /^\/search$/,
+    onBeforeAction: function () {
+      Router.go('/search/');
+    }
+  });
+  this.route('search/', {
+    path: /^\/search\/$/,
+    template: 'search',
+    onBeforeAction: [
+      function (pause) {
+        if (Meteor.isClient) {
+          if (!Meteor.userId()) {
+            Router.go('/');
+            this.render('user_loggedout_content');
+            GAnalytics.pageview();
+            pause();
+          } else {
+            ChatSubscribe();
+          }
+        }
+      },
+      function (pause) {
+        if (Meteor.isClient) {
+          // we're done waiting on all subs
+          if (this.ready()) {
+            NProgress.done();
+          } else {
+            NProgress.start();
+            pause(); // stop downstream funcs from running
+          }
+        }
+      }
+    ],
+    waitOn: function () {
+      return [
+        Meteor.subscribe('user_servers'),
+        Meteor.subscribe('user_channels'),
+        Meteor.subscribe('bookmarks')
+      ]
+    },
+    onAfterAction: function () {
+      if (Meteor.isClient)
+        GAnalytics.pageview('/search/');
     },
     fastRender: true
   });

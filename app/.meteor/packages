@@ -44,6 +44,6 @@ accounts-ui-bootstrap-3
 jquery-titlealert
 oauth-encryption
 kadira
-http
+less
 chosen-package
-stylus
+http

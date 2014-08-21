@@ -1,6 +1,6 @@
 if (Meteor.isServer) {
   try {
-	   irc = Npm.require('irc');
+    irc = Npm.require('irc');
   } catch (err) {
     irc = require('irc');
   }
@@ -27,14 +27,9 @@ if (Meteor.isServer) {
   crypto = Npm.require('crypto');
   Map = Meteor.require('collections/map');
   try {
-    var privateKey = Assets.getText('certs/privatekey.pem');
-    var certificate = Assets.getText('certs/certificate.pem');
-    ssl_credentials = crypto.createCredentials({
-      key: privateKey, cert: certificate});
-    delete privatekey;
-    delete certificate;
+    elasticsearch = Npm.require('elasticsearch');
   } catch (err) {
-    ssl_credentials = false;
+    elasticsearch = require('elasticsearch');
   }
   try {
     elasticsearch = Npm.require('elasticsearch');

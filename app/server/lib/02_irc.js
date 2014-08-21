@@ -10,6 +10,67 @@ RECENT_CHANNEL_LOGS = {};
 CHANNEL_LOGS_WRITE_LOCKS = {};
 
 
+/*
+ * Manager for SSL credentials for servers
+ *
+ * @return {Object}
+ */
+ServerSSLManager = function () {
+  var _SERVER_SSLS = {};
+  return {
+    /*
+     * Get SSL credentials for a server
+     *
+     * @param {Object} A Server collection object
+     * @return
+     *   {Object} if able to generate SSL credentials
+     *   false if not able to generate SSL credentials
+     */
+    get: function (server) {
+      if ( _SERVER_SSLS[server.name] !== undefined)
+        return _SERVER_SSLS[server.name];
+      var ssl_credentials = false;
+      var private_key_file = (server.ssl || {}).private_key_file === undefined?
+        CONFIG.SSL_DEFAULT_PRIVATE_KEY_FILE: server.ssl.private_key_file;
+      var cert_file = (server.ssl || {}).cert_file === undefined?
+        CONFIG.SSL_DEFAULT_CERT_FILE: server.ssl.cert_file;
+      var ca_file = (server.ssl || {}).ca_file === undefined?
+        CONFIG.SSL_DEFAULT_CA_FILE: server.ssl.ca_file;
+      try {
+        var cert = Assets.getText(cert_file);
+      } catch (err) {
+        var cert = null;
+      }
+      try {
+        var private_key = Assets.getText(private_key_file);
+      } catch (err) {
+        var private_key = null;
+      }
+      if ( !(cert || private_key) ) {
+        _SERVER_SSLS[server.name] = ssl_credentials;
+        return ssl_credentials;
+      }
+      ssl_credentials = {};
+      if (private_key)
+        ssl_credentials.key = private_key;
+      if (cert)
+        ssl_credentials.cert = cert;
+      try {
+        if (ca_file) {
+          var ca = Assets.getText(ca_file);
+          ssl_credentials.ca = ca;
+        }
+      } catch (err) {
+        ssl_credentials = false;
+      }
+      _SERVER_SSLS[server.name] = ssl_credentials;
+      return ssl_credentials;
+    }
+  }
+}
+serverSSLManager = ServerSSLManager();
+
+
 ChannelNicksManager = function () {
   var _CHANNEL_NICKS_RECENTLY_JOINED = {};
   var _CHANNEL_NICKS_RECENTLY_PARTED = {};
@@ -245,7 +306,8 @@ ChannelLogsManager = function () {
                 client_nick);
               rwlock.unlock();
               log.not_for_user = (UserServers.findOne(
-                {name: server_name, current_nick: nick}) || {}
+                {name: server_name, current_nick: nick,
+                 active: true, status: 'connected'}) || {}
               ).user || null;
               if (shall_write)
                 _insert(log);
@@ -1013,6 +1075,9 @@ IRCHandler = function (user, user_server) {
   }
 
   function _partUserServerCallback (message, user_server, client) {
+    try {
+      delete LISTENERS.server['nickSet'];
+    } catch (err) {}
     Fiber(function () {
       UserServers.update(
         {_id: user_server._id},
@@ -1370,6 +1435,7 @@ IRCHandler = function (user, user_server) {
             var server_url = server.connections[0].url;
             var server_port = server.connections[0].port || '6667';
             var nick = user_server.nick;
+            var ssl_credentials = serverSSLManager.get(server);
             var client_options = {
               autoConnect: false,
               port: ssl_credentials? '6697': server_port,
@@ -1383,8 +1449,10 @@ IRCHandler = function (user, user_server) {
             if (user_server.name == 'local') {
               client_options = {autoConnect: false};
             }
-            client = new irc.Client(server_url, nick, client_options);
-            client_data[server.name] = client;
+            if ( !client ) {
+              client = new irc.Client(server_url, nick, client_options);
+              client_data[server.name] = client;
+            }
             UserServers.update(
               {_id: user_server._id, status: {$nin: ['user_disconnected', 'admin_disconnected']}},
               {

@@ -200,12 +200,15 @@ function getCurrentUser() {
 function _join_user_server(user, user_server_name) {
   var user_server = UserServers.findOne({
     user: user.username, name: user_server_name});
+  var irc_handler = (CLIENTS[user.username] || {})[user_server_name];
   if (user_server) {
-    var irc_handler = IRCHandler(user, user_server);
-    if (!CLIENTS[user.username]) {
-      CLIENTS[user.username] = {};
+    if ( !irc_handler ) {
+      irc_handler = IRCHandler(user, user_server);
+      if (!CLIENTS[user.username]) {
+        CLIENTS[user.username] = {};
+      }
+      CLIENTS[user.username][user_server_name] = irc_handler;
     }
-    CLIENTS[user.username][user_server_name] = irc_handler;
     irc_handler.joinUserServer();
   } else
     throw new Meteor.Error(404, "User server with name: "
@@ -276,6 +279,12 @@ Meteor.startup(function () {
     name: "delayed",
     debug: CONFIG.QUEUE_DEBUG || false,
     maxProcessing: CONFIG.DELAYED_QUEUE_WORKERS_COUNT || 1
+  });
+  // Reload server config
+  Servers.find({}).forEach(function (server) {
+    if (!GlobalServers[server.name])
+      return;
+    Servers.update({_id: server._id}, {$set: GlobalServers[server.name]});
   });
   Meteor.users.find({}).forEach(function (user) {
     UserServers.find(
