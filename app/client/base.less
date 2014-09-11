@@ -158,3 +158,61 @@ nav {
     border-top: 1px solid #aaa;
 }
 
+
+.side-bar {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 0;
+    width: 250px;
+    display: block;
+    background-color: #222222;
+    transition: background-color .3s ease-in-out 0s,left .5s ease-in-out .3s;
+}
+
+.message-container {
+    background: #fff;
+    border-radius: 2px;
+    bottom: 4px;
+    left: 250px;
+    overflow: hidden;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    
+    .chat-header {
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 10px;
+
+        .channel-avatar {
+            height: 45px;
+            width: 45px;
+            float: left;
+            box-sizing: border-box;
+            background-color: black;
+            position: relative;
+            top: 8px;
+            left: 8px;
+        }
+
+        .channel-content {
+            box-sizing: border-box;
+            width: auto;
+            margin: 0 38px 0 68px;
+            .channel-title {
+                font-size: 25px;
+            }
+            .channel-description {
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+        
+    }
+}

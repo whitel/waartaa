@@ -117,7 +117,7 @@ Router.map(function () {
     onBeforeAction: function (pause) {
       if (Meteor.isClient)
         if (Meteor.userId()) {
-          Router.go('/chat/', {replaceState: true});
+          Router.go('/nchat/', {replaceState: true});
           pause();
         }
     },
@@ -127,6 +127,23 @@ Router.map(function () {
       Session.set('currentPage', 'index');
     },
     fastRender: true
+  });
+
+  this.route('nchat', {
+    path: /^\/nchat$/,
+    onBeforeAction: function () {
+      this.redirect('/nchat/');
+    }
+  });
+
+  this.route('nchat/', {
+    path: /^\/nchat\/$/,
+    template: 'main',
+    layoutTemplate: 'viewport',
+    yieldTemplates: {
+      'chatSidebar': {to: 'sidebar'},
+      'chatBox': {to: 'main'},
+    }
   });
 
   this.route('account', {

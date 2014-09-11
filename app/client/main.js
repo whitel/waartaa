@@ -45,26 +45,26 @@ Accounts.ui.config({
 
 
 /* Manage drawers */
-Template.header.events({
-  'click .drawer-toggle': function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var $this = $(e.currentTarget);
-    var drawerType = $this.data('target-drawer-type');
-    var revDrawerType = drawerType == 'left'? 'right': 'left';
-    if ($this.hasClass('active')) {
-      $('.drawer-container').removeClass('show-drawer').removeClass(
-        'show-drawer-' + drawerType);
-      $this.removeClass('active');
-    } else {
-      $('.drawer-container').addClass('show-drawer').addClass(
-        'show-drawer-' + drawerType).removeClass(
-        'show-drawer-' + revDrawerType);
-      $('.drawer-toggle-' + revDrawerType).removeClass('active');
-      $this.addClass('active'); 
-    }
-  }
-});
+// Template.header.events({
+//   'click .drawer-toggle': function (e) {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     var $this = $(e.currentTarget);
+//     var drawerType = $this.data('target-drawer-type');
+//     var revDrawerType = drawerType == 'left'? 'right': 'left';
+//     if ($this.hasClass('active')) {
+//       $('.drawer-container').removeClass('show-drawer').removeClass(
+//         'show-drawer-' + drawerType);
+//       $this.removeClass('active');
+//     } else {
+//       $('.drawer-container').addClass('show-drawer').addClass(
+//         'show-drawer-' + drawerType).removeClass(
+//         'show-drawer-' + revDrawerType);
+//       $('.drawer-toggle-' + revDrawerType).removeClass('active');
+//       $this.addClass('active'); 
+//     }
+//   }
+// });
 
 function hideDrawers () {
   $('.drawer-container').removeClass('show-drawer')
