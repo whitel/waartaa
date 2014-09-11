@@ -5,21 +5,29 @@
   <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 </head>
 
-<template name="layout">
-  {{> header}}
-  <div class="container width-100">
-    <div class="content">
-      <div class="wrapper">
-        <div class="proper-content">
-          {{> yield}}
-        </div>
-      </div>
-    </div>
+<template name="viewport">
+  <div class="side-bar">
+    {{> yield region="sidebar"}}
   </div>
-  {{> footer}}
+  <div class="message-container">
+    {{> yield region="main" }}
+  </div>
 </template>
 
-<template name="header">
+<template name="chatSidebar">
+</template>
+
+<template name="chatBox">
+  <div class="chat-header">
+    <div class="channel-avatar"></div>
+    <div class="channel-content">
+      <div class="channel-title">#dgplug</div>
+      <div class="channel-description">Welcome to Linux User's Group of Durgapur | Mailing list at  http://lists.dgplug.org/listinfo.cgi/users-dgplug.org | Old classes/q http://www.dgplug.org/irclogs/ | Good bye skvidal, R.I.P. | http://docs.python.org/3/tutorial/ | 10 years meet 10.dgplug.org |</div>
+    </div>
+  </div>
+</template>
+
+<!-- <template name="header">
   <nav id="global-navbar" class="navbar navbar-fixed-top waartaa-navbar" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -45,7 +53,7 @@
                   </sup>
               </span>
           </a><!-- waartaa-logo -->
-          {{#if isCurrentPage 'chat'}}
+          <!-- {{#if isCurrentPage 'chat'}}
             <a class="navbar-brand hidden-md hidden-lg drawer-toggle drawer-toggle-left" data-target-drawer-type="left" href="javascript:void(0)">
               <span class="fa fa-bars fa-inverted"></span>
               <span>{{ currentServer }}</span>
@@ -69,7 +77,7 @@
       </div>
     </div>
   </nav>
-</template>
+</template> -->
 
 <template name="navbar"></template>
 

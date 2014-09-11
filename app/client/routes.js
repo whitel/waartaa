@@ -1,7 +1,7 @@
 /* Routers */
 
 Router.configure({
-  layoutTemplate: 'layout'
+  layoutTemplate: 'viewport'
 });
 
 //Router.before(mustBeSignedIn, {except: ['index']});
@@ -13,7 +13,7 @@ Router.map(function () {
     onBeforeAction: function () {
       if (Meteor.isClient)
         if (Meteor.userId()) {
-          this.redirect('/chat/');
+          this.redirect('/nchat/');
         }
     },
     onAfterAction: function () {
@@ -22,6 +22,18 @@ Router.map(function () {
       Session.set('currentPage', 'index');
     },
     fastRender: true
+  });
+
+  Router.map(function () {
+    this.route('nchat/', {
+      path: /^\/nchat\/$/,
+      template: 'main',
+      layoutTemplate: 'viewport',
+      yieldTemplates: {
+        'chatSidebar': {to: 'sidebar'},
+        'chatBox': {to: 'main'},
+      }
+    });
   });
 
   this.route('account', {
@@ -49,12 +61,13 @@ Router.map(function () {
     ],
   });
 
-  this.route('chat', {
-    path: /^\/chat$/,
+  this.route('nchat', {
+    path: /^\/nchat$/,
     onBeforeAction: function () {
-      this.redirect('/chat/');
+      this.redirect('/nchat/');
     }
   });
+
   this.route('chat/', {
     path: /^\/chat\/$/,
     template: 'chat',
