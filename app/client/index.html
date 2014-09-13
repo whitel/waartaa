@@ -15,9 +15,20 @@
 </template>
 
 <template name="chatSidebar">
+  <div class="sidebar-user">
+    <div class="user-avatar float-left"></div>
+    <div class="user-details float-left">
+      <div class="user-name ellipsis">sayanchowdhury</div>
+      <div class="user-icons">
+        <i class="fa fa-gears"></i>
+        <i class="fa fa-sign-out"></i>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="chatBox">
+  {{#if currentUser}}
   <div class="chat-header">
     <div class="channel-avatar"></div>
     <div class="channel-content">
@@ -25,6 +36,9 @@
       <div class="channel-description">Welcome to Linux User's Group of Durgapur | Mailing list at  http://lists.dgplug.org/listinfo.cgi/users-dgplug.org | Old classes/q http://www.dgplug.org/irclogs/ | Good bye skvidal, R.I.P. | http://docs.python.org/3/tutorial/ | 10 years meet 10.dgplug.org |</div>
     </div>
   </div>
+  {{else}}
+  <div></div>
+  {{/if}}
 </template>
 
 <!-- <template name="header">
