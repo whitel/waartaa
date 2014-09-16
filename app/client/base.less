@@ -172,16 +172,14 @@ nav {
 
 .side-bar {
     bottom: 0;
-    left: 0;
+    left: -250px;
     overflow: hidden;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     position: absolute;
     top: 0;
     width: 250px;
     display: block;
     background-color: #222222;
-    transition: background-color .3s ease-in-out 0s,left .5s ease-in-out .3s;
     .sidebar-user {
         float: left;
         width: 250px;
@@ -190,7 +188,7 @@ nav {
         border-top: 2px solid #372c36;
         padding: 7px 0 9px 8px;
         height: 60px;
-        position: fixed;
+        position: absolute;
         bottom: 0;
         left: 0;
         .user-avatar {
@@ -212,15 +210,25 @@ nav {
     }
 }
 
+#main.floatl {
+    -webkit-transform: translate3d(250px, 0, 0);
+    transition: all .4s;
+}
+
+#main {
+    transition: all .4s;
+    height: 100%;
+}
+
 .message-container {
+    height: 100%;
     background: #fff;
-    border-radius: 2px;
-    bottom: 4px;
-    left: 250px;
-    overflow: hidden;
-    position: absolute;
-    right: 0px;
-    top: 0px;
+    overflow: hidden;   
+    transition: all .4s;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
     
     .chat-header {
         box-sizing: border-box;

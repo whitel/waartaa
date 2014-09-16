@@ -6,16 +6,18 @@
 </head>
 
 <template name="viewport">
-  <div class="side-bar">
-    {{> yield region="sidebar"}}
-  </div>
-  <div class="message-container">
-    {{> yield region="main" }}
+  <div id="main" class="floatl">
+    <div class="side-bar">
+      {{> yield region="sidebar"}}
+    </div>
+    <nav class="message-container">
+      {{> yield region="main" }}
+    </nav>
   </div>
 </template>
 
 <template name="chatSidebar">
-  <div class="sidebar-user">
+  <footer class="sidebar-user">
     <div class="user-avatar float-left"></div>
     <div class="user-details float-left">
       <div class="user-name ellipsis">sayanchowdhury</div>
@@ -24,7 +26,7 @@
         <i class="fa fa-sign-out"></i>
       </div>
     </div>
-  </div>
+  </footer>
 </template>
 
 <template name="chatBox">
