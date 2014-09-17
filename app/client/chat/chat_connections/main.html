@@ -1,21 +1,11 @@
 <template name="chat_connections">
   <div id="chat-servers" class="bs-sidebar drawer drawer-left col-md-2 col-sm-3 col-xs-10 hidden-sm hidden-xs">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <strong>Servers</strong>
-        <span class="pull-right">
-          <button id="server-add-btn" class="btn btn-primary compact-icon-btn enable-tipsy" title="Add new server" data-toggle="modal" data-target="#addServerModal">
-            <icon class="glypicon glyphicon-plus"></icon>
-          </button>
-        </span>
-      </div>
-      <div class="panel-body scroller-container">
-        <ul class="nav bs-sidenav">
-          {{#each servers}}
-            {{> chat_connection_server}}
-          {{/each}}
-        </ul>
-      </div>
+    <div class="panel-body scroller-container">
+      <ul class="nav bs-sidenav">
+        {{#each servers}}
+          {{> chat_connection_server}}
+        {{/each}}
+      </ul>
     </div>
   </div>
   {{> add_server_modal}}
@@ -24,5 +14,10 @@
     {{> edit_server_modal}}
     {{> add_server_channel}}
   {{/each}}
+  <div id="add-network">
+    <a href="#">
+      <i class="fa fa-plus rotate"></i>Add Network
+    </a>
+  </div>
 </template>
 
