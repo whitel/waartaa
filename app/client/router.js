@@ -146,6 +146,16 @@ Router.map(function () {
     }
   });
 
+  this.route('addNetwork', {
+    path: '/chat/networks/new/',
+    template: 'main',
+    layoutTemplate: 'viewport',
+    yieldTemplates: {
+      'chatSidebar': {to: 'sidebar'},
+      'addNetwork': {to: 'main'},
+    }
+  });
+
   this.route('account', {
     path: /^\/settings$/,
     onBeforeAction: function(pause) {
@@ -179,6 +189,7 @@ Router.map(function () {
       pause();
     }
   });
+
   this.route('chat/', {
     path: /^\/chat\/$/,
     template: 'chat',
