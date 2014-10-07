@@ -142,7 +142,7 @@ Router.map(function () {
     layoutTemplate: 'viewport',
     yieldTemplates: {
       'chatSidebar': {to: 'sidebar'},
-      'chatBox': {to: 'main'},
+      'chatBox': {to: 'viewport'},
     }
   });
 

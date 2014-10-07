@@ -33,6 +33,9 @@ ul {
     float: left;
 }
 
+.clear {
+    clear: both;
+}
 
 .waartaa-logo {
     font-family: 'Lato', sans-serif;
@@ -223,6 +226,7 @@ nav {
 
 .message-container {
     height: 100%;
+    left: 250px;
     background: #fff;
     overflow: hidden;   
     transition: all .4s;
@@ -231,10 +235,15 @@ nav {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     
-    .chat-header {
+    h4 {
+        border-bottom: 1px solid #E5E7E8;
+        padding-bottom: 7px;
+    }
+    
+    .header {
         box-sizing: border-box;
         border-bottom: 1px solid rgba(0,0,0,0.05);
-        padding: 10px;
+        padding: 15px;
 
         .channel-avatar {
             height: 45px;
@@ -242,7 +251,6 @@ nav {
             float: left;
             box-sizing: border-box;
             background-color: black;
-            position: relative;
             top: 8px;
             left: 8px;
         }
@@ -282,6 +290,7 @@ nav {
     border-left: 5px solid #0D82BD;
     background: white;
 }
+
 #add-network {
     height: 30px;
     line-height: 30px;
@@ -305,4 +314,20 @@ nav {
 .sidebar-elem:hover {
     background-color: #353535;
     border-radius: 3px;
+}
+
+.container {
+    margin: 80px auto;
+    max-width: 700px;
+    padding: 30px;
+    overflow: hidden;
+    overflow-y: auto;
+    .title {
+        font-size: 35px;
+        padding-bottom: 20px;
+    }
+    .sub-title {
+        font-size: 25px;
+        border-bottom: 1px solid #E5E7E8;
+    }
 }
