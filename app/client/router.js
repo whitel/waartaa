@@ -119,7 +119,7 @@ BaseChatController = BaseController.extend({
     }, 2000);
     $('#chatlogs-loader').fadeOut();
   },
-  onStop: function () {
+  unload: function () {
     waartaa.chat.helpers.chatLogsWaypointHandler.unbind();
     var params = this.params;
     Tracker.nonreactive(function () {
