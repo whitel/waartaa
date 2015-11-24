@@ -1,0 +1,11 @@
+web:
+  build: .
+  ports:
+    - "3030:3000"
+  links:
+    - "db:db"
+
+db:
+  image: library/mongo:3.1
+  volumes:
+    - ./tmp:/data/db
